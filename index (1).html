@@ -1,0 +1,208 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>LUXIMPRIM - Personnalisation</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      background-color: #f9f9f9;
+    }
+    header {
+      background-color: #0d1b2a;
+      color: white;
+      padding: 2rem;
+      text-align: center;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 2.5rem;
+    }
+    nav {
+      background-color: #132f4c;
+      text-align: center;
+      padding: 1rem;
+    }
+    nav a {
+      color: white;
+      margin: 0 1rem;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    nav a:hover {
+      color: #e0c084;
+    }
+    .custom-section {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      padding: 2rem;
+      max-width: 1000px;
+      margin: auto;
+      background-color: white;
+      border-radius: 10px;
+    }
+    .form-container {
+      flex: 1;
+      min-width: 300px;
+    }
+    .preview-container {
+      flex: 1;
+      min-width: 300px;
+      text-align: center;
+    }
+    .preview {
+      position: relative;
+      width: 250px;
+      height: 300px;
+      margin: auto;
+      background-size: cover;
+      background-position: center;
+      border: 2px solid #ccc;
+      border-radius: 10px;
+    }
+    .preview-text {
+      position: absolute;
+      top: 65%;
+      width: 100%;
+      text-align: center;
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+    .preview-logo {
+      position: absolute;
+      top: 35%;
+      left: 50%;
+      transform: translateX(-50%);
+      max-width: 100px;
+      display: none;
+    }
+    label {
+      display: block;
+      margin-top: 1rem;
+      font-weight: bold;
+    }
+    input, select {
+      width: 100%;
+      padding: 0.6rem;
+      margin-top: 0.5rem;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+    button {
+      margin-top: 1rem;
+      background-color: #e0c084;
+      color: #0d1b2a;
+      border: none;
+      padding: 0.75rem;
+      font-weight: bold;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    footer {
+      background-color: #0d1b2a;
+      color: #ccc;
+      text-align: center;
+      padding: 1rem;
+      margin-top: 4rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>LUXIMPRIM</h1>
+    <p>L'impression qui marque</p>
+  </header>
+  <nav>
+    <a href="#">Accueil</a>
+    <a href="#">Personnalisation</a>
+    <a href="#">Commander</a>
+    <a href="#">À propos</a>
+    <a href="#">Contact</a>
+  </nav>
+  <section class="custom-section">
+    <div class="form-container">
+      <h2>Personnalisez votre produit</h2>
+      <form oninput="updatePreview()">
+        <label for="product">Produit :</label>
+        <select id="product" onchange="updatePreview()">
+          <option value="tshirt">T-shirt</option>
+          <option value="polo">Polo</option>
+          <option value="casquette">Casquette</option>
+        </select>
+        <label for="color">Couleur :</label>
+        <select id="color" onchange="updatePreview()">
+          <option value="white">Blanc</option>
+          <option value="black">Noir</option>
+          <option value="blue">Bleu</option>
+          <option value="green">Vert</option>
+          <option value="lightgray">Cendre</option>
+          <option value="#5c4033">Marron</option>
+          <option value="#ffd700">Or</option>
+        </select>
+        <label for="text">Texte à imprimer :</label>
+        <input type="text" id="text" placeholder="Votre texte ici" oninput="updatePreview()" />
+        <label for="logo">Logo :</label>
+        <input type="file" id="logo" accept="image/*" onchange="loadLogo(event)" />
+        <button type="button" onclick="downloadPreview()">Télécharger l'aperçu</button>
+      </form>
+    </div>
+    <div class="preview-container">
+      <h3>Aperçu</h3>
+      <div class="preview" id="preview-box" style="background-image: url('https://cdn-icons-png.flaticon.com/512/892/892458.png');">
+        <img id="preview-logo" class="preview-logo">
+        <div class="preview-text" id="preview-text">Votre texte ici</div>
+      </div>
+    </div>
+  </section>
+  <footer>
+    <p>© 2025 LUXIMPRIM | Komah, Sokodé | 91187838 / 98186545</p>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <script>
+    function updatePreview() {
+      const product = document.getElementById('product').value;
+      const color = document.getElementById('color').value;
+      const text = document.getElementById('text').value;
+      const previewBox = document.getElementById('preview-box');
+      const previewText = document.getElementById('preview-text');
+
+      let imgURL = '';
+      if (product === 'tshirt') {
+        imgURL = 'https://cdn-icons-png.flaticon.com/512/892/892458.png';
+      } else if (product === 'polo') {
+        imgURL = 'https://cdn-icons-png.flaticon.com/512/892/892504.png';
+      } else if (product === 'casquette') {
+        imgURL = 'https://cdn-icons-png.flaticon.com/512/892/892581.png';
+      }
+
+      previewBox.style.backgroundImage = `url('${imgURL}')`;
+      previewBox.style.backgroundColor = color;
+      previewText.textContent = text || 'Votre texte ici';
+    }
+
+    function loadLogo(event) {
+      const reader = new FileReader();
+      reader.onload = function () {
+        const logoImg = document.getElementById('preview-logo');
+        logoImg.src = reader.result;
+        logoImg.style.display = 'block';
+      };
+      reader.readAsDataURL(event.target.files[0]);
+    }
+
+    function downloadPreview() {
+      html2canvas(document.getElementById('preview-box')).then(canvas => {
+        const link = document.createElement('a');
+        link.download = 'luximprim-aperçu.png';
+        link.href = canvas.toDataURL();
+        link.click();
+      });
+    }
+  </script>
+</body>
+</html>
